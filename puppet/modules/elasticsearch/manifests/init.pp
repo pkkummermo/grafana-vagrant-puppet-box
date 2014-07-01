@@ -22,13 +22,7 @@ class elasticsearch {
     owner => www-data,
     group => www-data,
   }
-
-  file { $elasticsearch_dest :
-    ensure => directory,
-    owner => www-data,
-    group => www-data,
-  }
-
+  
   exec { "download-elasticsearch":
     command => "wget -O $elasticsearch_loc $elasticsearch_url",
     creates => "$elasticsearch_loc"
