@@ -4,16 +4,18 @@
 // must be set before Grafana is run for the first time.
 ///
 define(['settings'], function (Settings) {
+    var hostName = location.hostname;
+
     return new Settings({
         datasources: {
             graphite: {
                 type: "graphite",
-                url: "http://localhost:9100",
+                url: "http://" + hostName + ":9100",
                 default: true
             }
         },
         default_route: '/dashboard/file/default.json',
-        elasticsearch: "http://localhost:9200",
+        elasticsearch: "http://" + hostName + ":9200",
         grafana_index: "grafana-dash",
         timezoneOffset: null,
         unsaved_changes_warning: true,
