@@ -6,6 +6,9 @@ class graphite {
 
  $webapp_loc = "$build_dir/graphite-web.tar.gz"
 
+  include elasticsearch
+  include grafana
+
   exec { "download-graphite-webapp":
         command => "wget -O $webapp_loc $webapp_url",
         creates => "$webapp_loc"
@@ -86,7 +89,7 @@ class graphite {
  }
 
   file { "/etc/apache2/sites-available/default" :
-    content =>' 
+    content =>'
 <VirtualHost *:80>
         ServerName graphite
         DocumentRoot "/opt/graphite/webapp"
@@ -100,6 +103,10 @@ class graphite {
                 SetEnv DJANGO_SETTINGS_MODULE graphite.settings
                 PythonDebug Off
                 PythonAutoReload Off
+        </Location>
+        Alias /grafana/ /opt/grafana/
+        <Location "/grafana">
+            SetHandler None
         </Location>
 
         <Location "/content/">
@@ -141,5 +148,4 @@ class graphite {
   package { "python-support":
     ensure => installed,
   }
-
 }
