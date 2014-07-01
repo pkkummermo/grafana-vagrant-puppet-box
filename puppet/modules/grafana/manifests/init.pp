@@ -6,13 +6,7 @@ class grafana {
   $grafana_url = "http://grafanarel.s3.amazonaws.com/grafana-$grafana_version.tar.gz"
   $grafana_loc = "$build_dir/grafana-$grafana_version.tar.gz"
   $grafana_dest = "/opt/grafana/"
-  $grafana_settings = "/opt/grafana/settings.js"
-
-  file { $grafana_dest :
-    ensure => directory,
-    owner => www-data,
-    group => www-data,
-  }
+  $grafana_settings = "/opt/grafana/config.js"
 
   exec { "download-grafana":
     command => "wget -O $grafana_loc $grafana_url",
@@ -36,6 +30,10 @@ class grafana {
   file { $grafana_settings :
     source => "puppet:///modules/grafana/config.js",
     ensure => present,
-    require => Exec[install-grafana]
+    require => Exec[install-grafana],
+  }
+  file { "${grafana_dest}config.sample.js" :
+    ensure => absent,
+    require => Exec[install-grafana],
   }
 }
