@@ -14,7 +14,7 @@ define(['settings'], function (Settings) {
                 default: true
             }
         },
-        default_route: '/dashboard/file/default.json',
+        default_route: '/dashboard/elasticsearch/mona',
         elasticsearch: "http://" + hostName + ":9200",
         grafana_index: "grafana-dash",
         timezoneOffset: null,
