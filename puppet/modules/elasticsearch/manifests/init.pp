@@ -25,7 +25,8 @@ class elasticsearch {
   
   exec { "download-elasticsearch":
     command => "wget -O $elasticsearch_loc $elasticsearch_url",
-    creates => "$elasticsearch_loc"
+    creates => "$elasticsearch_loc",
+    notify => Service[elasticsearch],
   }
 
   exec { "unpack-elasticsearch":
@@ -33,6 +34,7 @@ class elasticsearch {
     cwd => $build_dir,
     subscribe => Exec[download-elasticsearch],
     refreshonly => true,
+    notify => Service[elasticsearch],
   }
 
   exec { "install-elasticsearch" :
