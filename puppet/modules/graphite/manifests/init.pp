@@ -1,32 +1,33 @@
 class graphite {
 
- $build_dir = "/tmp"
+  $build_dir = "/tmp"
+  $graphite_minor = "0.9"
+  $graphite_version = "0.9.10"
 
- $webapp_url = "http://launchpad.net/graphite/0.9/0.9.9/+download/graphite-web-0.9.9.tar.gz"
-
- $webapp_loc = "$build_dir/graphite-web.tar.gz"
+  $webapp_url = "http://launchpad.net/graphite/$graphite_minor/$graphite_version/+download/graphite-web-$graphite_version.tar.gz"
+  $webapp_loc = "$build_dir/graphite-web.tar.gz"
 
   include elasticsearch
   include grafana
 
   exec { "download-graphite-webapp":
-        command => "wget -O $webapp_loc $webapp_url",
-        creates => "$webapp_loc"
-   }
+    command => "wget -O $webapp_loc $webapp_url",
+    creates => "$webapp_loc"
+  }
 
-   exec { "unpack-webapp":
-     command => "tar -zxvf $webapp_loc",
-     cwd => $build_dir,
-     subscribe=> Exec[download-graphite-webapp],
-     refreshonly => true,
-   }
+  exec { "unpack-webapp":
+    command => "tar -zxvf $webapp_loc",
+    cwd => $build_dir,
+    subscribe=> Exec[download-graphite-webapp],
+    refreshonly => true,
+  }
 
-   exec { "install-webapp":
-     command => "python setup.py install",
-     cwd => "$build_dir/graphite-web-0.9.9",
-     require => Exec[unpack-webapp],
-     creates => "/opt/graphite/webapp"
-   }
+  exec { "install-webapp":
+    command => "python setup.py install",
+    cwd => "$build_dir/graphite-web-$graphite_version",
+    require => Exec[unpack-webapp],
+    creates => "/opt/graphite/webapp"
+  }
 
   file { [ "/opt/graphite/storage", "/opt/graphite/storage/whisper" ]:
     owner => "www-data",
@@ -35,17 +36,17 @@ class graphite {
   }
 
   exec { "init-db":
-     command => "python manage.py syncdb --noinput",
-     cwd => "/opt/graphite/webapp/graphite",
-     creates => "/opt/graphite/storage/graphite.db",
-     subscribe => File["/opt/graphite/storage"],
-     require => [ File["/opt/graphite/webapp/graphite/initial_data.json"], Package["python-django-tagging"] ]
-   }
+    command => "python manage.py syncdb --noinput",
+    cwd => "/opt/graphite/webapp/graphite",
+    creates => "/opt/graphite/storage/graphite.db",
+    subscribe => File["/opt/graphite/storage"],
+    require => [ File["/opt/graphite/webapp/graphite/initial_data.json"], Package["python-django-tagging"] ]
+  }
 
   file { "/opt/graphite/webapp/graphite/initial_data.json" :
-     require => File["/opt/graphite/storage"],
-     ensure => present,
-     content => '
+    require => File["/opt/graphite/storage"],
+    ensure => present,
+    content => '
 [
   {
     "pk": 1, 
@@ -86,7 +87,7 @@ class graphite {
     source => "puppet:///modules/graphite/local_settings.py",
     ensure => present,
     require => File["/opt/graphite/storage"]
- }
+  }
 
   file { "/etc/apache2/sites-available/default" :
     content =>'
@@ -134,14 +135,14 @@ class graphite {
   }
 
   package {
-        [ apache2, python-ldap, python-cairo, python-django, python-django-tagging, python-simplejson, libapache2-mod-python, python-memcache, python-pysqlite2]: ensure => latest;
+    [ apache2, python-ldap, python-cairo, python-django, python-django-tagging, python-simplejson, libapache2-mod-python, python-memcache, python-pysqlite2]: ensure => latest;
   }
 
   package {
     python-whisper :
       ensure   => installed,
       provider => dpkg,
-      source   => "/vagrant/python-whisper_0.9.9-1_all.deb",
+      source   => "/vagrant/python-whisper_0.9.12-1_all.deb",
       require  => Package['python-support']
   }
 
