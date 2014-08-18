@@ -1,12 +1,7 @@
-Vagrant::Config.run do |config|
+Vagrant.configure("1") do |config|
 
   config.vm.box = "precise64"
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
-
-  config.vm.provider "virtualbox" do |v|
-    v.memory = 2048
-    v.cpus = 2
-  end
 
   config.vm.forward_port 80, 9100
   config.vm.forward_port 2003, 2003
@@ -21,3 +16,9 @@ Vagrant::Config.run do |config|
   end
 end
 
+Vagrant.configure("2") do |config|
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 2048
+    v.cpus = 2
+  end
+end
