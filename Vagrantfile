@@ -2,8 +2,11 @@ Vagrant::Config.run do |config|
 
   config.vm.box = "precise64"
   config.vm.box_url = "http://files.vagrantup.com/precise64.box"
-  config.cpus = 2
-  config.memory = 2048
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 2048
+    v.cpus = 2
+  end
 
   config.vm.forward_port 80, 9100
   config.vm.forward_port 2003, 2003
@@ -17,3 +20,4 @@ Vagrant::Config.run do |config|
     puppet.manifest_file  = "base.pp"
   end
 end
+
