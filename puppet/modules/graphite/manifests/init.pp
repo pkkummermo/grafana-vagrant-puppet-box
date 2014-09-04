@@ -2,7 +2,7 @@ class graphite {
 
   $build_dir = "/tmp"
   $graphite_minor = "0.9"
-  $graphite_version = "0.9.10"
+  $graphite_version = "0.9.12"
 
   $webapp_url = "http://launchpad.net/graphite/$graphite_minor/$graphite_version/+download/graphite-web-$graphite_version.tar.gz"
   $webapp_loc = "$build_dir/graphite-web.tar.gz"
