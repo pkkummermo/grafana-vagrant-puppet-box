@@ -142,7 +142,7 @@ class graphite {
     python-whisper :
       ensure   => installed,
       provider => dpkg,
-      source   => "/vagrant/python-whisper_0.9.12-1_all.deb",
+      source   => "/vagrant/python-whisper_0.9.9-1_all.deb",
       require  => Package['python-support']
   }
 
