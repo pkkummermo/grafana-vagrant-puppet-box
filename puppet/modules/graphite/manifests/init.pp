@@ -2,9 +2,9 @@ class graphite {
 
   $build_dir = "/tmp"
   $graphite_minor = "0.9"
-  $graphite_version = "0.9.10"
+  $graphite_version = "0.9.12"
 
-  $webapp_url = "http://launchpad.net/graphite/$graphite_minor/$graphite_version/+download/graphite-web-$graphite_version.tar.gz"
+  $webapp_url = "https://github.com/graphite-project/graphite-web/archive/$graphite_version.tar.gz"
   $webapp_loc = "$build_dir/graphite-web.tar.gz"
 
   include elasticsearch
@@ -142,7 +142,7 @@ class graphite {
     python-whisper :
       ensure   => installed,
       provider => dpkg,
-      source   => "/vagrant/python-whisper_0.9.12-1_all.deb",
+      source   => "/vagrant/python-whisper_0.9.9-1_all.deb",
       require  => Package['python-support']
   }
 
