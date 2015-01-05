@@ -110,42 +110,9 @@ class graphite {
     require => File["/opt/graphite/storage"]
   }
 
-  file { "/etc/apache2/sites-available/default" :
-    content =>'
-<VirtualHost *:80>
-        ServerName graphite
-        DocumentRoot "/opt/graphite/webapp"
-        ErrorLog /opt/graphite/storage/log/webapp/error.log
-        CustomLog /opt/graphite/storage/log/webapp/access.log common
-
-        <Location "/">
-                SetHandler python-program
-                PythonPath "[\'/opt/graphite/webapp\'] + sys.path"
-                PythonHandler django.core.handlers.modpython
-                SetEnv DJANGO_SETTINGS_MODULE graphite.settings
-                PythonDebug Off
-                PythonAutoReload Off
-        </Location>
-        Alias /grafana/ /opt/grafana/
-        <Location "/grafana">
-            SetHandler None
-        </Location>
-
-        <Location "/content/">
-                SetHandler None
-        </Location>
-
-        <Location "/media/">
-                SetHandler None
-        </Location>
-
-    # NOTE: In order for the django admin site media to work you
-    # must change @DJANGO_ROOT@ to be the path to your django
-    # installation, which is probably something like:
-    # /usr/lib/python2.6/site-packages/django
-        Alias /media/ "@DJANGO_ROOT@/contrib/admin/media/"
-
-</VirtualHost>',
+  file { "/etc/apache2/sites-available/000-default.conf" :
+    source => "puppet:///modules/graphite/000-default.conf",
+    ensure => present,
     notify => Service["apache2"],
     require => Package["apache2"],
   }
