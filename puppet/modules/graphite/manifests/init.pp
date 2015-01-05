@@ -8,7 +8,7 @@ class graphite {
 
   $whisper_version = "0.9.13-pre1"
   $whisper_url = "https://github.com/graphite-project/whisper/archive/$whisper_version.tar.gz"
-  $whisper_loc = "$build_dir/graphite-web.tar.gz"
+  $whisper_loc = "$build_dir/whisper.tar.gz"
 
   include elasticsearch
   include grafana
