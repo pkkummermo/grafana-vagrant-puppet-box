@@ -10,7 +10,7 @@ class carbon {
  include graphite
 
   package { "python-twisted" :
-    ensure => latest
+    ensure => "11.1.0"
   }
 
  file { "/etc/init.d/carbon" :
