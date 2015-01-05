@@ -30,6 +30,7 @@ All hail Vagrant and Puppet for making it possible for me to share this simple r
 git clone https://github.com/pkkummermo/grafana-vagrant-puppet-box.git
 cd grafana-vagrant-puppet-box
 vagrant up
+vagrant provision
 open http://localhost:9100/ to see Graphite running
 open http://localhost:9100/grafana/ to see Grafana running
 ```
