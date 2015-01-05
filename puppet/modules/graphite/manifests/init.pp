@@ -110,6 +110,12 @@ class graphite {
     require => File["/opt/graphite/storage"]
   }
 
+  file { "/opt/graphite/conf/graphite.wsgi" :
+    source => "puppet:///modules/graphite/graphite.wsgi",
+    ensure => present,
+    require => File["/opt/graphite/storage"]
+  }
+
   file { "/etc/apache2/sites-available/000-default.conf" :
     source => "puppet:///modules/graphite/000-default.conf",
     ensure => present,
@@ -119,10 +125,10 @@ class graphite {
 
   service { "apache2" :
     ensure => "running",
-    require => [ File["/opt/graphite/storage/log/webapp/"], File["/opt/graphite/storage/graphite.db"] ],
+    require => [ File["/opt/graphite/storage/log/webapp/"], File["/opt/graphite/storage/graphite.db"], Package["libapache2-mod-wsgi"] ],
   }
 
   package {
-    [ apache2, python-ldap, python-cairo, python-django, python-django-tagging, python-simplejson, libapache2-mod-python, python-memcache, python-pysqlite2]: ensure => latest;
+    [ apache2, libapache2-mod-wsgi, htop, python-ldap, python-cairo, python-django, python-django-tagging, python-simplejson, libapache2-mod-python, python-memcache, python-pysqlite2]: ensure => latest;
   }
 }
