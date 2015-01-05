@@ -1,7 +1,7 @@
 class grafana {
 
   $build_dir = "/tmp"
-  $grafana_version = "1.8.0"
+  $grafana_version = "1.9.1"
 
   $grafana_url = "http://grafanarel.s3.amazonaws.com/grafana-$grafana_version.tar.gz"
   $grafana_loc = "$build_dir/grafana-$grafana_version.tar.gz"
