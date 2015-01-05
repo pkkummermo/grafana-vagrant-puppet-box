@@ -1,8 +1,7 @@
 class graphite {
 
   $build_dir = "/tmp"
-  $graphite_minor = "0.9"
-  $graphite_version = "0.9.12"
+  $graphite_version = "0.9.13-pre1"
 
   $webapp_url = "https://github.com/graphite-project/graphite-web/archive/$graphite_version.tar.gz"
   $webapp_loc = "$build_dir/graphite-web.tar.gz"
