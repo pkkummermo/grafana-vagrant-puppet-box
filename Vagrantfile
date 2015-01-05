@@ -1,7 +1,6 @@
 Vagrant.configure("1") do |config|
 
-  config.vm.box = "precise64"
-  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  config.vm.box = "ubuntu/trusty64"
 
   config.vm.forward_port 80, 9100
   config.vm.forward_port 2003, 2003
