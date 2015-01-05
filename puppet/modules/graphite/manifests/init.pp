@@ -1,10 +1,14 @@
 class graphite {
 
   $build_dir = "/tmp"
-  $graphite_version = "0.9.13-pre1"
 
+  $graphite_version = "0.9.13-pre1"
   $webapp_url = "https://github.com/graphite-project/graphite-web/archive/$graphite_version.tar.gz"
   $webapp_loc = "$build_dir/graphite-web.tar.gz"
+
+  $whisper_version = "0.9.13-pre1"
+  $whisper_url = "https://github.com/graphite-project/whisper/archive/$whisper_version.tar.gz"
+  $whisper_loc = "$build_dir/graphite-web.tar.gz"
 
   include elasticsearch
   include grafana
@@ -26,6 +30,24 @@ class graphite {
     cwd => "$build_dir/graphite-web-$graphite_version",
     require => Exec[unpack-webapp],
     creates => "/opt/graphite/webapp"
+  }
+
+  exec { "download-whisper":
+    command => "wget -O $whisper_loc $whisper_url",
+    creates => "$whisper_loc"
+  }
+
+  exec { "unpack-whisper":
+    command => "tar -zxvf $whisper_loc",
+    cwd => $build_dir,
+    subscribe=> Exec[download-whisper],
+    refreshonly => true,
+  }
+
+  exec { "install-whisper":
+    command => "python setup.py install",
+    cwd => "$build_dir/whisper-$whisper_version",
+    require => Exec[unpack-whisper]
   }
 
   file { [ "/opt/graphite/storage", "/opt/graphite/storage/whisper" ]:
@@ -135,17 +157,5 @@ class graphite {
 
   package {
     [ apache2, python-ldap, python-cairo, python-django, python-django-tagging, python-simplejson, libapache2-mod-python, python-memcache, python-pysqlite2]: ensure => latest;
-  }
-
-  package {
-    python-whisper :
-      ensure   => installed,
-      provider => dpkg,
-      source   => "/vagrant/python-whisper_0.9.12-1_all.deb",
-      require  => Package['python-support']
-  }
-
-  package { "python-support":
-    ensure => installed,
   }
 }
