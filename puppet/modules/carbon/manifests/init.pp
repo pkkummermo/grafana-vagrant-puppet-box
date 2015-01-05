@@ -57,7 +57,7 @@ class carbon {
 
  exec { "install-carbon" :
    command => "python setup.py install",
-   cwd => "$build_dir/$carbon_version",
+   cwd => "$build_dir/carbon-$carbon_version",
    require => Exec[unpack-carbon],
    creates => "/opt/graphite/bin/carbon-cache.py",
   }
