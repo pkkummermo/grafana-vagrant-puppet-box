@@ -19,7 +19,7 @@ Debian package for statsd (github.com/etsy) included
 * Carbon: http://localhost:2003
 * statsd: http://localhost:9125:udp
 * ElasticSearch: http://localhost:9200
-* Grafana: http://localhost:9100/grafana
+* Grafana: http://localhost:9100/grafana/
  
 
 ## Installation
