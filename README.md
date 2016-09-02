@@ -1,5 +1,8 @@
 # Graphite, Carbon, statsd, ElasticSearch and Grafana - All-in-one
 
+## Word of warning
+This is an old project and you really should look into other projects which have done the same. I'm revamping our installation as we speak, and alot has changed (yay!) since I wrote this. I might link to a new container project from this one at a later time :)
+
 Provision a virtual machine with vagrant and puppet with 
 
 * Graphite (http://graphite.wikidot.com/)
